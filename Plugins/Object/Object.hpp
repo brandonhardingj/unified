@@ -60,6 +60,8 @@ private:
     ArgumentStack GetIsDestroyable          (ArgumentStack&& args);
     ArgumentStack DoSpellImmunity           (ArgumentStack&& args);
     ArgumentStack DoSpellLevelAbsorption    (ArgumentStack&& args);
+    ArgumentStack CalculateItemSellPrice    (ArgumentStack&& args);
+    ArgumentStack CalculateItemBuyPrice     (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 };

@@ -29,6 +29,8 @@
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Serialize.hpp"
 #include "Utils.hpp"
+#include "API/CNWItem.hpp"
+#include "API/CNWSStore.hpp"
 
 #include <cstring>
 
@@ -98,6 +100,8 @@ Object::Object(Services::ProxyServiceList* services)
     REGISTER(GetIsDestroyable);
     REGISTER(DoSpellImmunity);
     REGISTER(DoSpellLevelAbsorption);
+    REGISTER(CalculateItemSellPrice);
+    REGISTER(CalculateItemBuyPrice);
 
 #undef REGISTER
 }
@@ -968,6 +972,40 @@ ArgumentStack Object::DoSpellLevelAbsorption(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::CalculateItemSellPrice(ArgumentStack&& args)
+{
+    int32_t retval = -1;
+    if (auto *pStore = Utils::AsNWSStore(object(args)))
+    {
+        if (auto *pItem = Utils::AsNWSItem(object(args)))
+        {
+            if (auto *pObject = object(args))
+            {
+                retval = pStore->CalculateItemSellPrice(pItem, pObject->OBJECT_ID);
+            }
+        }	
+    }
+    
+    return Services::Events::Arguments(retval);
+}
+
+ArgumentStack Object::CalculateItemBuyPrice(ArgumentStack&& args)
+{
+    int32_t retval = -1;
+    if (auto *pStore = Utils::AsNWSStore(object(args)))
+    {
+        if (auto *pItem = Utils::AsNWSItem(object(args)))
+        {
+            if (auto *pObject = object(args))
+            {
+                retval = pStore->CalculateItemBuyPrice(pItem, pObject->OBJECT_ID);
+            }
+        }	
+    }
+    
+    return Services::Events::Arguments(retval);
 }
 
 }
